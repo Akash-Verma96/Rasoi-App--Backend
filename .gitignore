@@ -7,9 +7,20 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
+# Dependencies
+node_modules/
+
+# Environment variables (important)
+.env
+.env.*
+!.env.example
+
+# Build folders
 dist
 dist-ssr
+build
+
+# Local files
 *.local
 
 # Editor directories and files
@@ -22,3 +33,20 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# OS files
+Thumbs.db
+
+# Cache
+.cache
+.temp
+.tmp
+
+# Coverage
+coverage/
+
+# Optional
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
