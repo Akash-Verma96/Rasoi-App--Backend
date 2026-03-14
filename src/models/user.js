@@ -39,18 +39,9 @@ const userSchema = new Schema({
         required : true
     },
 
-    age : {
-        type : Number,
-        min : 12
-    },
-
-    gender : {
+    role : {
         type : String,
-        validate(value){
-            if(!["Male","Female","Other"].includes(value)){
-                throw new Error("Gender is not gender...");
-            }
-        }
+        required : true
     }
 
 })

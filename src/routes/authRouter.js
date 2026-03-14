@@ -7,8 +7,7 @@ const authRouter = express.Router();
 
 authRouter.post("/signup", async (req, res) => {
   try {
-    const { firstName, lastName, emailId, password, phoneNo, age, gender } =
-      req.body;
+    const { firstName, lastName, emailId, password, role } = req.body;
 
     const hashPassword = await bcrypt.hash(password, 10);
 
@@ -17,9 +16,7 @@ authRouter.post("/signup", async (req, res) => {
       lastName,
       emailId,
       password: hashPassword,
-      phoneNo,
-      age,
-      gender,
+      role,
     });
 
     const savedUser = await user.save();
@@ -43,10 +40,9 @@ authRouter.post("/login", async (req, res) => {
   try {
     const { emailId, password } = req.body;
 
-
     const user = await User.findOne({ emailId: emailId });
 
-    if (!user){
+    if (!user) {
       throw new Error("Invalid credential!");
     }
 
@@ -65,7 +61,7 @@ authRouter.post("/login", async (req, res) => {
       });
     } else res.status(401).send("Invalid Credential !");
   } catch (error) {
-    res.status(400).send( error.message);
+    res.status(400).send(error.message);
   }
 });
 
