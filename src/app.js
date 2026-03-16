@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import cors from 'cors'
 import cookie_Parser from 'cookie-parser'
 import profileRouter from "./routes/profileRouter.js";
+import addMealRouter from "./routes/addMealRouter.js";
 
 const app = express();
 
@@ -16,10 +17,11 @@ app.use(cors({
 dotenv.config(); // used to take variable value from .env file middleware
 app.use(express.json()) // To read json data sent by client middleware
 app.use(cookie_Parser()) // --> used to get token from client side generaly client use res.cookie.token to get token
-
+app.use("/uploads", express.static("uploads"));
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
+app.use("/", addMealRouter);
 
 
 
