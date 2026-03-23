@@ -41,22 +41,16 @@ addMealRouter.post(
 addMealRouter.post("/mealDetail/:mealId", userAuth, async (req, res) => {
   try {
     const userId = req.user._id;
-    // const { quantity } = req.body;
+    const { quantity } = req.body;
     const { mealId } = req.params;
 
-    // const cart = new Cart({
-    //   userId,
-    //   items : [{meal:mealId,quantity}]
-    // })
-
-    // await cart.save()
 
     let cart = await Cart.findOne({ userId });
 
     if (!cart) {
       cart = new Cart({
         userId,
-        items: [{ meal: mealId, quantity: 1}],
+        items: [{ meal: mealId, quantity: quantity}],
       });
     } else {
       const itemIndex = cart.items.findIndex(
@@ -66,7 +60,7 @@ addMealRouter.post("/mealDetail/:mealId", userAuth, async (req, res) => {
       if (itemIndex > -1) {
         cart.items[itemIndex].quantity += 1;
       } else {
-        cart.items.push({ meal: mealId, quantity: 1 });
+        cart.items.push({ meal: mealId, quantity: quantity });
       }
     }
 
@@ -80,5 +74,30 @@ addMealRouter.post("/mealDetail/:mealId", userAuth, async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
+addMealRouter.delete("/cart/:mealId",userAuth, async(req,res)=>{
+  try {
+    const userId = req.user._id
+    const mealId = req.params.mealId
+    const cart = await Cart.findOneAndUpdate(
+      {userId},
+      {
+        $pull:{
+          items:{meal:mealId}
+        }
+      },
+      {new:true}
+    )
+
+    await cart.save();
+    res.json({
+      messgae:"Meal cleared successfully !",
+      data: cart
+    })
+    
+  } catch (error) {
+    res.status(500).send(error.message)
+  }
+})
 
 export default addMealRouter;
