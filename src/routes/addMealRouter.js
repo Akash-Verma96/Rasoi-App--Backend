@@ -100,4 +100,29 @@ addMealRouter.delete("/cart/:mealId",userAuth, async(req,res)=>{
   }
 })
 
+addMealRouter.patch("/cart/:mealId",userAuth, async(req,res)=>{
+  try {
+    const userId = req.user._id
+    const mealId = req.params.mealId
+    const cart = await Cart.findOneAndUpdate(
+      {userId},
+      {
+        $pull:{
+          items:{meal:mealId}
+        }
+      },
+      {new:true}
+    )
+
+    await cart.save();
+    res.json({
+      messgae:"Meal cleared successfully !",
+      data: cart
+    })
+    
+  } catch (error) {
+    res.status(500).send(error.message)
+  }
+})
+
 export default addMealRouter;
