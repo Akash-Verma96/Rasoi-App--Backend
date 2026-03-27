@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const mealSchema = new  mongoose.Schema({
+    restaurant:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Restaurant",
+        required: true
+    },
     name : {
         type : String,
         required : true,

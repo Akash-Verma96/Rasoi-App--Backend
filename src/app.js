@@ -6,6 +6,8 @@ import cors from 'cors'
 import cookie_Parser from 'cookie-parser'
 import profileRouter from "./routes/profileRouter.js";
 import addMealRouter from "./routes/addMealRouter.js";
+import restaurantRouter from "./routes/restaurantRouter.js";
+import orderRouter from "./routes/orderRouter.js";
 
 const app = express();
 
@@ -22,6 +24,8 @@ app.use("/uploads", express.static("uploads"));
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", addMealRouter);
+app.use("/", restaurantRouter);
+app.use("/", orderRouter);
 
 
 

@@ -3,21 +3,29 @@ import upload from "../middlewares/multer.js";
 import Meal from "../models/meal.js";
 import userAuth from "../middlewares/auth.js";
 import Cart from "../models/cart.js";
+import Restaurant from "../models/restaurant.js";
 
 const addMealRouter = express.Router();
 
 addMealRouter.post(
   "/restaurant/addMeal",
-  upload.single("image"),
+  upload.single("image"),userAuth,
   async (req, res) => {
     try {
       const { name, price, category, description } = req.body;
+      const {userId} = req.user._id;
 
       if (!req.file) {
         res.status(400).send("Image file required !");
       }
 
+      const rest = await Restaurant.findOne({userId});
+      
+      const restaurantId = rest._id;
+
+      
       const meal = new Meal({
+        restaurant: restaurantId,
         name,
         price,
         category,
@@ -32,8 +40,8 @@ addMealRouter.post(
         meal,
       });
     } catch (err) {
-      console.log(err.message);
-      res.status(500).send(err);
+      
+      res.status(500).send(err.message);
     }
   },
 );
