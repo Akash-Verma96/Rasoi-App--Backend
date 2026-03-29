@@ -35,12 +35,17 @@ const orderSchema = new mongoose.Schema(
             required: true,
             min: 1,
           },
+          image: {
+            type: String,
+            required: true
+          },
         },
       ],
       validate: [(val) => val.length > 0, "Order must have at least one item"],
     },
     address: {
-      name: {
+      address : [{
+        name: {
         type: String,
         required: true,
         trim: true,
@@ -67,17 +72,18 @@ const orderSchema = new mongoose.Schema(
       },
       lat: {
         type: Number,
-        required: true,
+        // required: true,
       },
       lng: {
         type: Number,
-        required: true,
+        // required: true,
       },
+      }]
     },
     paymentMethod: {
       type: String,
       required: true,
-      enum: ["COD", "UPI"],
+      enum: ["cod", "upi"],
     },
     paymentStatus: {
       type: String,
